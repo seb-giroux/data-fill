@@ -1,0 +1,57 @@
+.tree {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--figma-color-text, #1a1a1a);
+}
+
+.categoryRow:hover {
+  background-color: var(--figma-color-bg-hover, #f0f0f0);
+}
+
+.chevron {
+  font-size: 8px;
+  width: 10px;
+  flex-shrink: 0;
+  color: var(--figma-color-text-secondary, #888);
+}
+
+.properties {
+  /* indented under the category */
+}
+
+.propertyRow {
+  padding: 5px 8px 5px 24px;
+  font-size: 11px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--figma-color-text, #1a1a1a);
+}
+
+.propertyRow:hover {
+  background-color: var(--figma-color-bg-hover, #f0f0f0);
+}
+
+.propertyRow.selected {
+  background-color: var(--figma-color-bg-brand, #18a0fb);
+  color: #ffffff;
+}
+
+.sample {
+  color: var(--figma-color-text-secondary, #888);
+  font-size: 10px;
+}
+
+.propertyRow.selected .sample {
+  color: rgba(255, 255, 255, 0.7);
+}

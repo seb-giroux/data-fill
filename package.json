@@ -1,0 +1,28 @@
+{
+  "name": "data-fill",
+  "version": "1.0.0",
+  "description": "A Figma plugin",
+  "scripts": {
+    "build": "build-figma-plugin --typecheck --minify",
+    "watch": "build-figma-plugin --typecheck --watch"
+  },
+  "figma-plugin": {
+    "editorType": [
+      "figma"
+    ],
+    "id": "data-fill",
+    "name": "Data Fill",
+    "main": "src/main.ts",
+    "ui": "src/ui.tsx"
+  },
+  "devDependencies": {
+    "@create-figma-plugin/build": "^3",
+    "@create-figma-plugin/tsconfig": "^3",
+    "@figma/plugin-typings": "*"
+  },
+  "dependencies": {
+    "@create-figma-plugin/ui": "^3",
+    "@create-figma-plugin/utilities": "^3",
+    "preact": "^10"
+  }
+}

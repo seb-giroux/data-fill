@@ -1,0 +1,10 @@
+{
+  "api": "1.0.0",
+  "editorType": [
+    "figma"
+  ],
+  "id": "data-fill",
+  "name": "Data Fill",
+  "main": "build/main.js",
+  "ui": "build/ui.js"
+}
