@@ -3,7 +3,8 @@ import type { EventHandler } from '@create-figma-plugin/utilities'
 export type Property = {
   id: string
   label: string
-  samples: string[]
+  samples: string[] | (() => string[])
+  preview?: string
 }
 
 export type Category = {
@@ -20,4 +21,9 @@ export type Selection = {
 export interface ReplaceTextHandler extends EventHandler {
   name: 'REPLACE_TEXT'
   handler: (samples: string[]) => void
+}
+
+export interface SelectionCountHandler extends EventHandler {
+  name: 'SELECTION_COUNT'
+  handler: (count: number) => void
 }

@@ -15,7 +15,7 @@ Select one or more text layers in Figma, choose a data category and property fro
 | **Detection Event** | Type, Timestamp, Severity, Description, Source |
 | **Cardholder** | (cardholder-specific fields) |
 | **Credential** | (credential-specific fields) |
-| **Generic** | (general-purpose fields) |
+| **Generic** | Date, Date (Text), Date and Time, Time, IPv4, IPv6 (Short), IPv6 |
 
 ## Development
 
@@ -62,18 +62,19 @@ After any code change, run `npm run build` (or keep `npm run watch` running) and
 src/
   main.ts          # Plugin backend — handles text node replacement
   ui.tsx           # Plugin UI — rendered in the Figma plugin panel
+  fonts.ts         # Font collection and preloading utilities
   types.ts         # Shared TypeScript types
   components/
     Tree.tsx        # Collapsible category/property tree component
     Tree.module.css # Styles for the tree
   data/
     index.ts        # Exports all categories
+    generic.ts
     user.ts
     device.ts
     detection-event.ts
     cardholder.ts
     credential.ts
-    generic.ts
 manifest.json      # Figma plugin manifest
 package.json
 tsconfig.json
@@ -96,6 +97,17 @@ export const myCategory: Category = {
       samples: ['Sample A', 'Sample B', 'Sample C'],
     },
   ],
+}
+```
+
+`samples` can also be a function for dynamically generated values. Use the optional `preview` field to control what the tree shows as the hint text when `samples` is a function:
+
+```ts
+{
+  id: 'my-property',
+  label: 'My Property',
+  preview: 'e.g. Sample X',
+  samples: () => Array.from({ length: 10 }, () => generateValue()),
 }
 ```
 

@@ -1,17 +1,23 @@
 import { Button, render } from '@create-figma-plugin/ui'
-import { emit } from '@create-figma-plugin/utilities'
+import { emit, on } from '@create-figma-plugin/utilities'
 import { h } from 'preact'
 import { useState } from 'preact/hooks'
 
 import { Tree } from './components/Tree'
-import type { ReplaceTextHandler, Selection } from './types'
+import type { ReplaceTextHandler, SelectionCountHandler, Selection } from './types'
 
 function Plugin() {
   const [selected, setSelected] = useState<Selection | null>(null)
+  const [textCount, setTextCount] = useState(0)
+
+  on<SelectionCountHandler>('SELECTION_COUNT', setTextCount)
 
   function handleReplace() {
     if (!selected) return
-    emit<ReplaceTextHandler>('REPLACE_TEXT', selected.property.samples)
+    const samples = typeof selected.property.samples === 'function'
+      ? selected.property.samples()
+      : selected.property.samples
+    emit<ReplaceTextHandler>('REPLACE_TEXT', samples)
   }
 
   return (
@@ -21,7 +27,7 @@ function Plugin() {
       </div>
       <div style={{ padding: '8px', borderTop: '1px solid var(--figma-color-border, #e6e6e6)' }}>
         <Button disabled={selected === null} fullWidth onClick={handleReplace}>
-          Replace
+          Replace {textCount} {textCount === 1 ? 'text' : 'texts'}
         </Button>
       </div>
     </div>

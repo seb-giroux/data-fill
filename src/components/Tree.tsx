@@ -51,8 +51,8 @@ export function Tree({ selected, onSelect }: Props) {
                     onClick={() => handlePropertyClick(category, property)}
                   >
                     {property.label}
-                    {property.samples[0] && (
-                      <span class={styles.sample}> ({property.samples[0]})</span>
+                    {(property.preview ?? (Array.isArray(property.samples) ? property.samples[0] : undefined)) && (
+                      <span class={styles.sample}> ({property.preview ?? (property.samples as string[])[0]})</span>
                     )}
                   </div>
                 )

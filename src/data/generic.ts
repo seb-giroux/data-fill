@@ -33,7 +33,10 @@ export const generic: Category = {
     {
       id: 'ipv4',
       label: 'IPv4',
-      samples: ['192.168.0.1', '10.0.0.1', '172.16.254.1', '192.168.1.100', '10.10.0.42'],
+      preview: '10.4.17.XXX',
+      samples: () => Array.from({ length: 10 }, () =>
+        `10.4.17.${Math.floor(Math.random() * 256)}`
+      ),
     },
     {
       id: 'ipv6-short',

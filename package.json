@@ -4,6 +4,7 @@
   "description": "A Figma plugin",
   "scripts": {
     "build": "build-figma-plugin --typecheck --minify",
+    "postbuild": "node -e \"const fs=require('fs');const m=JSON.parse(fs.readFileSync('manifest.json'));fs.writeFileSync('manifest.json',JSON.stringify(m,null,2)+'\\n');\"",
     "watch": "build-figma-plugin --typecheck --watch"
   },
   "figma-plugin": {

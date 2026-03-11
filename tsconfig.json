@@ -1,6 +1,7 @@
 {
   "extends": "@create-figma-plugin/tsconfig",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "lib": ["DOM", "ES2020"]
   }
 }

@@ -6,4 +6,4 @@ import { device } from './device'
 import { generic } from './generic'
 import { user } from './user'
 
-export const categories: Category[] = [user, device, detectionEvent, cardholder, credential, generic]
+export const categories: Category[] = [generic, user, device, detectionEvent, cardholder, credential]

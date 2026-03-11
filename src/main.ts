@@ -1,38 +1,35 @@
-import { on, showUI } from '@create-figma-plugin/utilities'
+import { emit, on, showUI } from '@create-figma-plugin/utilities'
 
-import type { ReplaceTextHandler } from './types'
+import { collectVisibleTextNodes, loadFonts, preloadSelectionFonts } from './fonts'
+import type { ReplaceTextHandler, SelectionCountHandler } from './types'
 
 export default function () {
-  on<ReplaceTextHandler>('REPLACE_TEXT', async (samples: string[]) => {
-    const textNodes = figma.currentPage.selection.filter(
-      (node): node is TextNode => node.type === 'TEXT'
-    )
-    if (textNodes.length === 0) return
-
-    await Promise.all(
-      textNodes.map(async node => {
-        await loadNodeFonts(node)
-        node.characters = samples[Math.floor(Math.random() * samples.length)]
-      })
-    )
-  })
+  on<ReplaceTextHandler>('REPLACE_TEXT', handleReplaceText)
 
   showUI({ height: 420, width: 280 })
+
+  figma.on('selectionchange', onSelectionChange)
+  onSelectionChange()
 }
 
-async function loadNodeFonts(node: TextNode): Promise<void> {
-  const fonts = new Set<string>()
+function onSelectionChange(): void {
+  preloadSelectionFonts()
+  const count = figma.currentPage.selection.flatMap(collectVisibleTextNodes).length
+  emit<SelectionCountHandler>('SELECTION_COUNT', count)
+}
 
-  if (typeof node.fontName !== 'symbol') {
-    fonts.add(JSON.stringify(node.fontName))
-  } else {
-    for (let i = 0; i < node.characters.length; i++) {
-      const font = node.getRangeFontName(i, i + 1)
-      if (typeof font !== 'symbol') {
-        fonts.add(JSON.stringify(font))
-      }
-    }
+// ─── Handlers ────────────────────────────────────────────────────────────────
+
+async function handleReplaceText(samples: string[]): Promise<void> {
+  const textNodes = figma.currentPage.selection.flatMap(collectVisibleTextNodes)
+
+  await loadFonts(textNodes)
+
+  for (const node of textNodes) {
+    node.characters = samples[Math.floor(Math.random() * samples.length)]
   }
 
-  await Promise.all(Array.from(fonts).map(f => figma.loadFontAsync(JSON.parse(f) as FontName)))
+  const count = textNodes.length
+  figma.notify(`Replaced ${count} ${count === 1 ? 'text' : 'texts'}`)
 }
+
